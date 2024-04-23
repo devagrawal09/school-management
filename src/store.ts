@@ -11,10 +11,15 @@ export const store = createStore().setTablesSchema({
     address: { type: "string" },
     qualification: { type: "string" },
     post: { type: "string" },
+    father_name: { type: "string" },
+    start_date: { type: "string" },
+    teaching_class: { type: "string" },
+    subject: { type: "string" },
+    aadhar: { type: "string" },
   },
   payments: {
     month: { type: "string" },
-    amount: { type: "number" },
+    amount: { type: "string" },
     employeeId: { type: "string" },
   },
 });

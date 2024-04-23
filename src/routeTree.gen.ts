@@ -17,6 +17,11 @@ import { Route as EmployeesImport } from './routes/employees'
 import { Route as EmployeesIndexImport } from './routes/employees.index'
 import { Route as EmployeesNewImport } from './routes/employees.new'
 import { Route as EmployeesEmployeeIdImport } from './routes/employees.$employeeId'
+import { Route as EmployeesEmployeeIdIndexImport } from './routes/employees.$employeeId/index'
+import { Route as EmployeesEmployeeIdPaymentsImport } from './routes/employees.$employeeId/payments'
+import { Route as EmployeesEmployeeIdPaymentsIndexImport } from './routes/employees.$employeeId/payments.index'
+import { Route as EmployeesEmployeeIdPaymentsNewImport } from './routes/employees.$employeeId/payments.new'
+import { Route as EmployeesEmployeeIdPaymentsPaymentIdImport } from './routes/employees.$employeeId/payments.$paymentId'
 
 // Create Virtual Routes
 
@@ -49,6 +54,35 @@ const EmployeesEmployeeIdRoute = EmployeesEmployeeIdImport.update({
   getParentRoute: () => EmployeesRoute,
 } as any)
 
+const EmployeesEmployeeIdIndexRoute = EmployeesEmployeeIdIndexImport.update({
+  path: '/',
+  getParentRoute: () => EmployeesEmployeeIdRoute,
+} as any)
+
+const EmployeesEmployeeIdPaymentsRoute =
+  EmployeesEmployeeIdPaymentsImport.update({
+    path: '/payments',
+    getParentRoute: () => EmployeesEmployeeIdRoute,
+  } as any)
+
+const EmployeesEmployeeIdPaymentsIndexRoute =
+  EmployeesEmployeeIdPaymentsIndexImport.update({
+    path: '/',
+    getParentRoute: () => EmployeesEmployeeIdPaymentsRoute,
+  } as any)
+
+const EmployeesEmployeeIdPaymentsNewRoute =
+  EmployeesEmployeeIdPaymentsNewImport.update({
+    path: '/new',
+    getParentRoute: () => EmployeesEmployeeIdPaymentsRoute,
+  } as any)
+
+const EmployeesEmployeeIdPaymentsPaymentIdRoute =
+  EmployeesEmployeeIdPaymentsPaymentIdImport.update({
+    path: '/$paymentId',
+    getParentRoute: () => EmployeesEmployeeIdPaymentsRoute,
+  } as any)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -73,6 +107,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EmployeesIndexImport
       parentRoute: typeof EmployeesImport
     }
+    '/employees/$employeeId/payments': {
+      preLoaderRoute: typeof EmployeesEmployeeIdPaymentsImport
+      parentRoute: typeof EmployeesEmployeeIdImport
+    }
+    '/employees/$employeeId/': {
+      preLoaderRoute: typeof EmployeesEmployeeIdIndexImport
+      parentRoute: typeof EmployeesEmployeeIdImport
+    }
+    '/employees/$employeeId/payments/$paymentId': {
+      preLoaderRoute: typeof EmployeesEmployeeIdPaymentsPaymentIdImport
+      parentRoute: typeof EmployeesEmployeeIdPaymentsImport
+    }
+    '/employees/$employeeId/payments/new': {
+      preLoaderRoute: typeof EmployeesEmployeeIdPaymentsNewImport
+      parentRoute: typeof EmployeesEmployeeIdPaymentsImport
+    }
+    '/employees/$employeeId/payments/': {
+      preLoaderRoute: typeof EmployeesEmployeeIdPaymentsIndexImport
+      parentRoute: typeof EmployeesEmployeeIdPaymentsImport
+    }
   }
 }
 
@@ -81,7 +135,14 @@ declare module '@tanstack/react-router' {
 export const routeTree = rootRoute.addChildren([
   IndexLazyRoute,
   EmployeesRoute.addChildren([
-    EmployeesEmployeeIdRoute,
+    EmployeesEmployeeIdRoute.addChildren([
+      EmployeesEmployeeIdPaymentsRoute.addChildren([
+        EmployeesEmployeeIdPaymentsPaymentIdRoute,
+        EmployeesEmployeeIdPaymentsNewRoute,
+        EmployeesEmployeeIdPaymentsIndexRoute,
+      ]),
+      EmployeesEmployeeIdIndexRoute,
+    ]),
     EmployeesNewRoute,
     EmployeesIndexRoute,
   ]),

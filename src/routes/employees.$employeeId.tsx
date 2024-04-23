@@ -1,8 +1,4 @@
-import {
-  createFileRoute,
-  useLoaderData,
-  useRouter,
-} from "@tanstack/react-router";
+import { Outlet, createFileRoute } from "@tanstack/react-router";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { CLASSES, Class, GENDERS, Gender, POSTS, Post } from "@/enums";
@@ -16,6 +12,11 @@ import {
 import { Employee } from "./employees";
 import { useForm } from "@tanstack/react-form";
 import { store } from "@/store";
+import { snakeToTitleCase } from "@/lib/utils";
+
+function EmployeeDetailsLayout() {
+  return <Outlet />;
+}
 
 export const Route = createFileRoute("/employees/$employeeId")({
   loader: ({ params }) => {
@@ -32,30 +33,7 @@ export const Route = createFileRoute("/employees/$employeeId")({
     );
     return { selectedEmployee };
   },
-  component: () => {
-    const { selectedEmployee } = useLoaderData({
-      from: "/employees/$employeeId",
-    });
-    const router = useRouter();
-
-    return (
-      <div>
-        <h2 className="text-xl text-center">Edit Employee Details</h2>
-        {selectedEmployee ? (
-          <EmployeeForm
-            key={selectedEmployee.id}
-            employee={selectedEmployee}
-            onSubmit={(e) => {
-              store.setRow("employees", selectedEmployee.id, e);
-              router.invalidate();
-            }}
-          />
-        ) : (
-          <p className="text-center">Employee not found!</p>
-        )}
-      </div>
-    );
-  },
+  component: EmployeeDetailsLayout,
 });
 
 export function EmployeeForm({
@@ -68,7 +46,7 @@ export function EmployeeForm({
   const form = useForm<Employee>({
     defaultValues: employee,
     onSubmit: async ({ value }) => {
-      console.log(value);
+      console.log(`onSubmit`, value);
       onSubmit(value);
     },
   });
@@ -94,7 +72,7 @@ export function EmployeeForm({
                 type="text"
                 id={field.name}
                 name={field.name}
-                value={field.state.value}
+                value={field.state.value || ``}
                 onBlur={field.handleBlur}
                 onChange={(e) => field.handleChange(e.target.value)}
               />
@@ -140,7 +118,7 @@ export function EmployeeForm({
                 type="text"
                 id={field.name}
                 name={field.name}
-                value={field.state.value}
+                value={field.state.value || ``}
                 onBlur={field.handleBlur}
                 onChange={(e) => field.handleChange(e.target.value)}
               />
@@ -159,7 +137,7 @@ export function EmployeeForm({
                 type="text"
                 id={field.name}
                 name={field.name}
-                value={field.state.value}
+                value={field.state.value || ``}
                 onBlur={field.handleBlur}
                 onChange={(e) => field.handleChange(e.target.value)}
               />
@@ -178,7 +156,7 @@ export function EmployeeForm({
                 type="text"
                 id={field.name}
                 name={field.name}
-                value={field.state.value}
+                value={field.state.value || ``}
                 onBlur={field.handleBlur}
                 onChange={(e) => field.handleChange(e.target.value)}
               />
@@ -197,7 +175,7 @@ export function EmployeeForm({
                 type="text"
                 id={field.name}
                 name={field.name}
-                value={field.state.value}
+                value={field.state.value || ``}
                 onBlur={field.handleBlur}
                 onChange={(e) => field.handleChange(e.target.value)}
               />
@@ -216,7 +194,7 @@ export function EmployeeForm({
                 type="text"
                 id={field.name}
                 name={field.name}
-                value={field.state.value}
+                value={field.state.value || ``}
                 onBlur={field.handleBlur}
                 onChange={(e) => field.handleChange(e.target.value)}
               />
@@ -231,8 +209,10 @@ export function EmployeeForm({
                 {snakeToTitleCase(field.name || ``)}:
               </label>
               <Select
-                value={field.state.value}
-                onValueChange={(v) => field.handleChange(v as Class)}
+                value={field.state.value || ``}
+                onValueChange={(v) => {
+                  field.handleChange(v as Class);
+                }}
               >
                 <SelectTrigger className="text-black bg-slate-300 border-none">
                   <SelectValue placeholder="Select Class" />
@@ -260,7 +240,7 @@ export function EmployeeForm({
                 type="text"
                 id={field.name}
                 name={field.name}
-                value={field.state.value}
+                value={field.state.value || ``}
                 onBlur={field.handleBlur}
                 onChange={(e) => field.handleChange(e.target.value)}
               />
@@ -280,7 +260,7 @@ export function EmployeeForm({
                 type="text"
                 id={field.name}
                 name={field.name}
-                value={field.state.value}
+                value={field.state.value || ``}
                 onBlur={field.handleBlur}
                 onChange={(e) => field.handleChange(e.target.value)}
               />
@@ -325,19 +305,10 @@ export function EmployeeForm({
             className="float-right mt-4"
             disabled={!isDirty || !canSubmit || isSubmitting}
           >
-            {/* {console.log({ canSubmit, isSubmitting, isDirty })} */}
             {isSubmitting ? "..." : "Save"}
           </Button>
         )}
       />
     </form>
   );
-}
-
-function snakeToTitleCase(str: string): string {
-  return str
-    .replace(/_/g, " ")
-    .split(" ")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
 }
