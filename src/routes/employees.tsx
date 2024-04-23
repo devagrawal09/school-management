@@ -36,8 +36,8 @@ function EmployeesListPage() {
   );
 
   return (
-    <div className="flex">
-      <div className="flex flex-col w-1/2">
+    <div className="md:flex">
+      <div className="flex flex-col md:w-1/2">
         <div className=" p-8 border rounded-lg m-8">
           <h1 className="text-2xl text-center">Employees</h1>
           <Table className="min-w-full table-auto my-4">
@@ -94,7 +94,7 @@ function EmployeesListPage() {
           </Table>
         </div>
       </div>
-      <div className="flex flex-col w-1/2 ">
+      <div className="flex flex-col md:w-1/2">
         <div className="p-8 border rounded-lg m-8">
           <Outlet />
         </div>
