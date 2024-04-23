@@ -9,12 +9,14 @@ import {
 import { snakeToTitleCase } from "@/lib/utils";
 import { store } from "@/store";
 import { EmployeePayment } from "./payments";
+import { useToast } from "@/components/ui/use-toast";
 
 function PaymentDetailsPage() {
   const { selectedPayment } = useLoaderData({
     from: "/employees/$employeeId/payments/$paymentId",
   });
   const router = useRouter();
+  const { toast5s } = useToast();
 
   return (
     <div>
@@ -24,6 +26,7 @@ function PaymentDetailsPage() {
           payment={selectedPayment}
           onSubmit={(data) => {
             store.setRow("payments", selectedPayment.id, data);
+            toast5s({ title: "Payment Saved" });
             router.invalidate();
           }}
         />
@@ -39,7 +42,7 @@ export const Route = createFileRoute(
 )({
   loader: ({ params }) => {
     const payment = store.getRow("payments", params.paymentId);
-    console.log(params.paymentId, { payment });
+
     return {
       selectedPayment: {
         ...payment,
@@ -60,7 +63,6 @@ export function PaymentForm({
   const form = useForm<EmployeePayment>({
     defaultValues: employee,
     onSubmit: async ({ value }) => {
-      console.log(`onSubmit`, value);
       onSubmit(value);
     },
   });

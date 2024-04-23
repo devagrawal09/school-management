@@ -46,7 +46,6 @@ export function EmployeeForm({
   const form = useForm<Employee>({
     defaultValues: employee,
     onSubmit: async ({ value }) => {
-      console.log(`onSubmit`, value);
       onSubmit(value);
     },
   });

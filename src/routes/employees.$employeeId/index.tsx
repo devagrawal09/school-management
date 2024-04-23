@@ -7,12 +7,14 @@ import {
 } from "@tanstack/react-router";
 import { EmployeeForm } from "../employees.$employeeId";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/use-toast";
 
 function EmployeeDetailsPage() {
   const { selectedEmployee } = useLoaderData({
     from: "/employees/$employeeId",
   });
   const router = useRouter();
+  const { toast5s } = useToast();
 
   return (
     <div>
@@ -37,6 +39,7 @@ function EmployeeDetailsPage() {
           employee={selectedEmployee}
           onSubmit={(e) => {
             store.setRow("employees", selectedEmployee.id, e);
+            toast5s({ title: "Employee Saved" });
             router.invalidate();
           }}
         />

@@ -6,6 +6,7 @@ import {
 } from "@tanstack/react-router";
 import { PaymentForm } from "./payments.$paymentId";
 import { EmployeePayment } from "./payments";
+import { useToast } from "@/components/ui/use-toast";
 
 function NewPaymentPage() {
   const { selectedEmployee } = useLoaderData({
@@ -17,14 +18,16 @@ function NewPaymentPage() {
     employeeId: selectedEmployee?.id,
   };
   const router = useRouter();
+  const { toast5s } = useToast();
 
   return selectedEmployee ? (
     <PaymentForm
       payment={selectedPayment}
       onSubmit={(data) => {
-        console.log(data);
         const paymentId = store.addRow("payments", data);
         if (!paymentId) return;
+
+        toast5s({ title: "Payment Added" });
 
         router.invalidate();
         router.navigate({

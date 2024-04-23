@@ -141,7 +141,7 @@ export const Route = createFileRoute("/employees/$employeeId/payments")({
         ...payment,
       };
     });
-    console.log({ employeePayments });
+
     return { employeePayments };
   },
   component: PaymentsLayout,

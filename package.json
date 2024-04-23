@@ -12,6 +12,7 @@
   "dependencies": {
     "@radix-ui/react-select": "^2.0.0",
     "@radix-ui/react-slot": "^1.0.2",
+    "@radix-ui/react-toast": "^1.1.5",
     "@tanstack/react-form": "^0.19.2",
     "@tanstack/react-router": "^1.29.2",
     "@tanstack/react-table": "^8.16.0",

@@ -2,6 +2,7 @@ import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { Employee } from "./employees";
 import { EmployeeForm } from "./employees.$employeeId";
 import { store } from "@/store";
+import { useToast } from "@/components/ui/use-toast";
 
 function NewEmployeePage() {
   let selectedEmployee: Employee = {
@@ -11,6 +12,7 @@ function NewEmployeePage() {
     teaching_class: "LKG",
   };
   const router = useRouter();
+  const { toast5s } = useToast();
 
   return (
     <div>
@@ -21,6 +23,8 @@ function NewEmployeePage() {
           onSubmit={(e) => {
             const employeeId = store.addRow("employees", e);
             if (!employeeId) return;
+
+            toast5s({ title: "Employee Added" });
 
             router.invalidate();
             router.navigate({
