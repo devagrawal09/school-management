@@ -1,8 +1,8 @@
 import { createFileRoute, useRouter } from "@tanstack/react-router";
-import { Employee } from "./employees";
-import { EmployeeForm } from "./employees.$employeeId";
+import { Employee } from "../employees";
 import { store } from "@/store";
 import { useToast } from "@/components/ui/use-toast";
+import { EmployeeForm } from "./$employeeId";
 
 function NewEmployeePage() {
   let selectedEmployee: Employee = {

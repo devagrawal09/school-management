@@ -5,9 +5,9 @@ import {
   useLoaderData,
   useRouter,
 } from "@tanstack/react-router";
-import { EmployeeForm } from "../employees.$employeeId";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
+import { EmployeeForm } from "../$employeeId";
 
 function EmployeeDetailsPage() {
   const { selectedEmployee } = useLoaderData({
@@ -22,7 +22,9 @@ function EmployeeDetailsPage() {
         <h2 className="text-xl text-center w-full flex flex-col justify-center">
           Edit Employee Details
         </h2>
-        {selectedEmployee ? (
+      </div>
+      {selectedEmployee ? (
+        <>
           <Button>
             <Link
               to="/employees/$employeeId/payments"
@@ -31,18 +33,16 @@ function EmployeeDetailsPage() {
               View Payments
             </Link>
           </Button>
-        ) : null}
-      </div>
-      {selectedEmployee ? (
-        <EmployeeForm
-          key={selectedEmployee.id}
-          employee={selectedEmployee}
-          onSubmit={(e) => {
-            store.setRow("employees", selectedEmployee.id, e);
-            toast5s({ title: "Employee Saved" });
-            router.invalidate();
-          }}
-        />
+          <EmployeeForm
+            key={selectedEmployee.id}
+            employee={selectedEmployee}
+            onSubmit={(e) => {
+              store.setRow("employees", selectedEmployee.id, e);
+              toast5s({ title: "Employee Saved" });
+              router.invalidate();
+            }}
+          />
+        </>
       ) : (
         <p className="text-center">Employee not found!</p>
       )}

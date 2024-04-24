@@ -22,6 +22,15 @@ export const store = createStore().setTablesSchema({
     amount: { type: "string" },
     employeeId: { type: "string" },
   },
+  students: {
+    name: { type: "string" },
+    gender: { type: "string" },
+    mobile: { type: "string" },
+    address: { type: "string" },
+    father_name: { type: "string" },
+    start_date: { type: "string" },
+    class: { type: "string" },
+  },
 });
 
 export const relationships = createRelationships(

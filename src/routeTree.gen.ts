@@ -11,18 +11,27 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as StudentsImport } from './routes/students'
 import { Route as EmployeesImport } from './routes/employees'
 import { Route as IndexImport } from './routes/index'
-import { Route as EmployeesIndexImport } from './routes/employees.index'
-import { Route as EmployeesNewImport } from './routes/employees.new'
-import { Route as EmployeesEmployeeIdImport } from './routes/employees.$employeeId'
-import { Route as EmployeesEmployeeIdIndexImport } from './routes/employees.$employeeId/index'
-import { Route as EmployeesEmployeeIdPaymentsImport } from './routes/employees.$employeeId/payments'
-import { Route as EmployeesEmployeeIdPaymentsIndexImport } from './routes/employees.$employeeId/payments.index'
-import { Route as EmployeesEmployeeIdPaymentsNewImport } from './routes/employees.$employeeId/payments.new'
-import { Route as EmployeesEmployeeIdPaymentsPaymentIdImport } from './routes/employees.$employeeId/payments.$paymentId'
+import { Route as StudentsIndexImport } from './routes/students/index'
+import { Route as EmployeesIndexImport } from './routes/employees/index'
+import { Route as StudentsNewImport } from './routes/students/new'
+import { Route as StudentsStudentIdImport } from './routes/students/$studentId'
+import { Route as EmployeesNewImport } from './routes/employees/new'
+import { Route as EmployeesEmployeeIdImport } from './routes/employees/$employeeId'
+import { Route as EmployeesEmployeeIdIndexImport } from './routes/employees/$employeeId/index'
+import { Route as EmployeesEmployeeIdPaymentsImport } from './routes/employees/$employeeId/payments'
+import { Route as EmployeesEmployeeIdPaymentsIndexImport } from './routes/employees/$employeeId/payments.index'
+import { Route as EmployeesEmployeeIdPaymentsNewImport } from './routes/employees/$employeeId/payments.new'
+import { Route as EmployeesEmployeeIdPaymentsPaymentIdImport } from './routes/employees/$employeeId/payments.$paymentId'
 
 // Create/Update Routes
+
+const StudentsRoute = StudentsImport.update({
+  path: '/students',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const EmployeesRoute = EmployeesImport.update({
   path: '/employees',
@@ -34,9 +43,24 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const StudentsIndexRoute = StudentsIndexImport.update({
+  path: '/',
+  getParentRoute: () => StudentsRoute,
+} as any)
+
 const EmployeesIndexRoute = EmployeesIndexImport.update({
   path: '/',
   getParentRoute: () => EmployeesRoute,
+} as any)
+
+const StudentsNewRoute = StudentsNewImport.update({
+  path: '/new',
+  getParentRoute: () => StudentsRoute,
+} as any)
+
+const StudentsStudentIdRoute = StudentsStudentIdImport.update({
+  path: '/$studentId',
+  getParentRoute: () => StudentsRoute,
 } as any)
 
 const EmployeesNewRoute = EmployeesNewImport.update({
@@ -90,6 +114,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EmployeesImport
       parentRoute: typeof rootRoute
     }
+    '/students': {
+      preLoaderRoute: typeof StudentsImport
+      parentRoute: typeof rootRoute
+    }
     '/employees/$employeeId': {
       preLoaderRoute: typeof EmployeesEmployeeIdImport
       parentRoute: typeof EmployeesImport
@@ -98,9 +126,21 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EmployeesNewImport
       parentRoute: typeof EmployeesImport
     }
+    '/students/$studentId': {
+      preLoaderRoute: typeof StudentsStudentIdImport
+      parentRoute: typeof StudentsImport
+    }
+    '/students/new': {
+      preLoaderRoute: typeof StudentsNewImport
+      parentRoute: typeof StudentsImport
+    }
     '/employees/': {
       preLoaderRoute: typeof EmployeesIndexImport
       parentRoute: typeof EmployeesImport
+    }
+    '/students/': {
+      preLoaderRoute: typeof StudentsIndexImport
+      parentRoute: typeof StudentsImport
     }
     '/employees/$employeeId/payments': {
       preLoaderRoute: typeof EmployeesEmployeeIdPaymentsImport
@@ -140,6 +180,11 @@ export const routeTree = rootRoute.addChildren([
     ]),
     EmployeesNewRoute,
     EmployeesIndexRoute,
+  ]),
+  StudentsRoute.addChildren([
+    StudentsStudentIdRoute,
+    StudentsNewRoute,
+    StudentsIndexRoute,
   ]),
 ])
 

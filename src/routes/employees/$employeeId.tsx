@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Employee } from "./employees";
+import { Employee } from "../employees";
 import { useForm } from "@tanstack/react-form";
 import { store } from "@/store";
 import { snakeToTitleCase } from "@/lib/utils";
